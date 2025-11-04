@@ -1,8 +1,8 @@
 # Round 4 Reflection: Final Project Decision
 
-**Name**: [Your name]
-**PennKey**: [Your PennKey]
-**Date**: [Date]
+**Name**: Nico Marquez
+**PennKey**: namquez
+**Date**: 11/4/25
 
 ---
 
@@ -12,7 +12,7 @@ _List the projects you seriously considered. Keep it brief._
 
 | Project Name | Source | Key Takeaway (1 sentence) |
 |--------------|--------|---------------------------|
-| [Project 1]  | Round 3 / R2 Drop / R1 / Instructor / New | [What did you learn about this project?] |
+| Where2Go  | Round 3 / R2 Drop / R1 / Instructor / New | Very feasible scope on campus, clear value + crowdsourcing fits naturally. |
 | [Project 2]  | Round 3 / R2 Drop / R1 / Instructor / New | [What did you learn about this project?] |
 | [Project 3]  | Round 3 / R2 Drop / R1 / Instructor / New | [What did you learn about this project?] |
 

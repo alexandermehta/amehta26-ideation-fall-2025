@@ -549,39 +549,39 @@ _Continue through your full timeline..._
 
 ### Technical Risks
 
-**Risk 1**: Matching script fails to correctly group students due to edge cases (uneven numbers, conflicting availability).
+**Risk 1**: Matching logic produces uneven or low-quality groups (e.g., leftover students, conflicting availability).
 - **Likelihood**: Medium
 - **Impact**: Medium
-- **Mitigation**: Test the script with small dummy datasets and restrict availability options to simple, coarse time blocks.
-- **Backup plan**: Allow flexible group sizes (3-6) or place unmatched students into a secondary "overflow" matching round.
+- **Mitigation**: Keep the form extremely constrained (course, coarse availability blocks, one study preference) and test the script with small synthetic datasets before real signups.
+- **Backup plan**: Allow flexible group sizes (3–6), or place unmatched students into a secondary “overflow” round instead of forcing bad matches.
 
-**Risk 2**: [Describe technical challenge/uncertainty]
-- **Likelihood**: [Low / Medium / High]
-- **Impact**: [Low / Medium / High]
-- **Mitigation**: [How you'll prevent or address it]
-- **Backup plan**: [What you'll do if mitigation fails]
+**Risk 2**: Email distribution script fails or messages are flagged by university spam filters.
+- **Likelihood**: Low
+- **Impact**: High
+- **Mitigation**: Test email-sending with internal emails first (team + friends) and send messages in small batches to avoid rate limits.
+- **Backup plan**: Provide each student with a unique link to a results dashboard instead of sending the actual match details via email.
 
 ### Crowd-Related Risks
 
-**Risk 1**: [e.g., Can't recruit enough workers]
+**Risk 1**: Not enough students sign up to form viable groups if no professor agrees to distribute the form.
 - **Likelihood**: [Low / Medium / High]
 - **Impact**: [Low / Medium / High]
 - **Mitigation**: [How you'll prevent or address it]
 - **Backup plan**: [What you'll do if mitigation fails]
 
-**Risk 2**: [e.g., Low quality contributions]
-- **Likelihood**: [Low / Medium / High]
-- **Impact**: [Low / Medium / High]
-- **Mitigation**: [How you'll prevent or address it]
-- **Backup plan**: [What you'll do if mitigation fails]
+**Risk 2**: Low-quality responses or participants not following through (ghosting their assigned group).
+- **Likelihood**: Medium
+- **Impact**: Medium
+- **Mitigation**: Make the form very short and specific (e.g. max 3-5 questions, including “problem sets vs. concept review”) to increase match compatibility and reduce friction.
+- **Backup plan**: Send a quick confirmation (“Still want to be matched? Yes/No”) before running the matching script to filter out passive or uncommitted participants.
 
 ### Resource Risks
 
-**Risk 1**: [e.g., Budget overrun]
-- **Likelihood**: [Low / Medium / High]
-- **Impact**: [Low / Medium / High]
-- **Mitigation**: [How you'll prevent or address it]
-- **Backup plan**: [What you'll do if mitigation fails]
+**Risk 1**: Running out of time because the MVP requires more implementation effort than expected.
+- **Likelihood**: Medium
+- **Impact**: High
+- **Mitigation**: Keep the scope tightly limited to the essentials (form, matching script, results email) and avoid adding optional features until the core pipeline works.
+- **Backup plan**: If timing slips, simplify further by using a Google Form and a lightweight manual matching script to ensure the Week 1 and Week 2 tests still happen.
 
 ---
 
@@ -590,36 +590,39 @@ _Continue through your full timeline..._
 ### What You'll Measure
 
 **Primary metrics**:
-1. [Metric 1]: [How measured, target value]
-2. [Metric 2]: [How measured, target value]
-3. [Metric 3]: [How measured, target value]
+1. Signup Rate: Percentage of students in the target class who complete the preference form. How measured: Form submissions ÷ estimated class size. Target: ≥ 15% of a large intro course (e.g., CIS 1200). 
+2. Match Completion Rate: Percentage of matched students who open their results email/dashboard. How measured: Email open rates + unique page visits. Target: ≥ 70% engagement.
+3. Group Quality Rating: Students’ self-reported satisfaction with their group. How measured: 1–5 star rating submitted 5 days after matching. Target: Average rating ≥ 3.5 stars.
 
 **Secondary metrics**:
-1. [Metric 1]: [How measured]
-2. [Metric 2]: [How measured]
+1. Form Completion Time: Measured automatically by timestamp difference; used to confirm form is short and frictionless.
+2. Group Dropoff Indicators: Counts of participants who report their group never met or who request to be rematched.
 
 ### Analysis Approach
 
 **What questions will your analysis answer?**
-1. [Research question 1]
-2. [Research question 2]
-3. [Research question 3]
+1. Was recruitment through professors sufficient to generate meaningful participation?
+2. Did the simple matching rules (course + availability + preference) produce functional study groups?
+3. What user characteristics (e.g., availability type, study preference) correlate with higher satisfaction?
 
 **What comparisons will you make?**
 - [ ] Compare crowd vs. expert performance
 - [ ] Compare crowd vs. automated baseline
-- [ ] Compare different QC methods
-- [ ] Compare different aggregation methods
-- [ ] Analyze cost/quality tradeoffs
+- [✓] Compare different QC methods
+- [✓] Compare different aggregation methods
+- [✓] Analyze cost/quality tradeoffs
 - [ ] Other: [specify]
 
 **Data you'll collect for analysis**:
-- [Data type 1]: [Why you need it]
-- [Data type 2]: [Why you need it]
-- [Data type 3]: [Why you need it]
+- Form submissions: Needed to evaluate signup rate, preference distribution, and matching logic performance.
+- Match engagement data: Email open rates, click-throughs, and page visits to measure completion and participation.
+- Follow-up ratings: Necessary to quantify group quality and evaluate whether matching rules worked.
 
 **Analysis methods**:
-[Describe statistical tests, visualizations, or other analysis approaches]
+- Descriptive statistics (means, proportions) for signup rate, engagement, and ratings.
+- Visualizations: bar charts of group quality ratings mainly; funnel charts of user dropoff; heatmaps of availability overlap.
+- Simple correlation analysis between study preferences or availability types and satisfaction scores.
+- Qualitative analysis of optional free-text feedback to identify failure cases or improvement opportunities.
 
 ---
 
@@ -627,27 +630,27 @@ _Continue through your full timeline..._
 
 ### Worker Treatment
 
-**Fair compensation**: [How you ensure workers are fairly paid/compensated or derive value from what they are doing?]
+**Fair compensation**: Not applicable in the traditional “crowd worker” sense - students derive direct value (study partners) rather than monetary compensation.
 
-**Informed consent**: [How workers understand what they're contributing to]
+**Informed consent**: The form and recruitment email clearly state the project purpose, what information is collected, and how it will be used (to create effective study groups only).
 
-**Rejection policy**: [Under what circumstances would work be rejected?]
+**Rejection policy**: No work is “rejected”—all submissions are accepted unless the form is incomplete or empty. Students may be notified if they cannot be matched due to incompatible availability.
 
 ### Data Ethics
 
-**Privacy**: [How you protect worker and user privacy]
+**Privacy**: Only group members see each other’s emails; no sensitive data (e.g., grades, IDs) is collected. All data is stored in secure, access-controlled files.
 
-**Consent**: [How you obtain and document consent]
+**Consent**: Consent is obtained explicitly through the form, which states that participation is voluntary and used solely for this 2-week academic pilot.
 
-**Data storage**: [Where/how data is stored, who has access]
+**Data storage**: Stored in secure Google Drive or Firebase with limited access; deleted at the end of the project or anonymized for analysis.
 
 ### Potential Harms
 
-**Could your project be misused?**: [Consider potential negative applications]
+**Could your project be misused?**: Minimal risk; the most plausible misuse is sharing student emails beyond intended group members.
 
-**Could it cause harm?**: [Consider who might be negatively affected]
+**Could it cause harm?**: Potential discomfort if a student is matched into an incompatible or inactive group.
 
-**Mitigation**: [How you'll prevent or minimize potential harms]
+**Mitigation**: Limit shared information to first/last name and email; allow students to opt out anytime; run a confirmation step before matching; and avoid storing unnecessary data.
 
 ---
 
@@ -662,8 +665,8 @@ _Continue through your full timeline..._
 - Input/output format specifications
 
 **Current documentation status**:
-- [ ] QC module: [Fully documented / Partially documented / Not yet documented]
-- [ ] Aggregation module: [Fully documented / Partially documented / Not yet documented]
+- [ ] QC module: Not yet documented
+- [ ] Aggregation module: Not yet documented
 - [ ] Other modules: [List status]
 
 ### Repository README
@@ -680,7 +683,9 @@ _Continue through your full timeline..._
 ### Ongoing Documentation
 
 **How will you keep documentation current?**
-[Describe your process for maintaining docs as code evolves]
+- Update docstrings whenever logic changes.
+- Require that any new script or feature includes a README section before merging.
+- Maintain a simple “Changelog” documenting weekly updates to matching rules or form schema.
 
 ---
 
@@ -688,24 +693,25 @@ _Continue through your full timeline..._
 
 ### Technical Questions
 
-1. [Your question about implementation, architecture, etc.]
-2. [Your question about tools, platforms, etc.]
-3. [Your question about technical approach]
+1. Are simple rule-based matching algorithms sufficient for this project, or do you expect experimentation with multiple aggregation methods?
+2. Is there a recommended way to track email open/click metrics within course-allowed tools (Firebase, scripts, etc.)?
+3. For collecting ratings, is it acceptable to use Google Forms, or must everything be integrated into the web app?
 
 ### Scope Questions
 
-1. [Your question about whether something is in/out of scope]
-2. [Your question about project complexity]
-3. [Your question about realistic goals]
+1. Is running a pilot on one large course enough to satisfy the crowdsourcing requirement?
+2. How lightweight can the results dashboard be while still meeting course standards?
+3. Is it acceptable if the feedback survey is optional due to time constraints?
 
 ### Resource Questions
 
-1. [Your question about budget, tools, access]
-2. [Your question about recruitment, platforms]
+1. Are there any free email-sending services you recommend that won’t get flagged by university spam filters?
+2. Are there guidelines for acceptable recruitment channels if professor partnership fails?
 
 ### Other Concerns
 
-[Any other questions, concerns, or areas where you need guidance]
+- How strictly should we limit data retention after the project ends?
+- Is it okay to anonymize ratings for analysis, or is identified data preferred?
 
 ---
 

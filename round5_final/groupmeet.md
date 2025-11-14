@@ -58,38 +58,34 @@ _List all time slots when the ENTIRE team can meet with a TA. Use Eastern Time. 
 
 ### Project Connection to Round 4
 
-**Round 4 Decision**: [STAYING / PIVOTING / JOINING / NEW]
+**Round 4 Decision**: PIVOTING
 
-**Original idea from**: [Round 1/2/3 author(s) - names/pennkeys]
+**Original idea from**: Instructor-proposed project
 
 **How the idea evolved**: 
-_Briefly describe how your project changed from its original conception through Rounds 1-4 to this final proposal_
-
-[2-3 sentences describing the evolution]
+In Rounds 1–3 I worked on TerraTruth, an ambitious humanitarian mapping project that combined geospatial pipelines, AI pre-filtering, and volunteer crowdsourcing. After seeing the viability scores and feedback, I pivoted in Round 4 to GroupMeet, an instructor idea with a much tighter scope and a directly testable crowd loop. For the final proposal, we further narrowed GroupMeet to a single-course pilot with a simple form-based matcher and lightweight feedback survey so we can validate the matching loop end-to-end within one semester.
 
 ### Problem Statement
 
-_Refined from your Round 4 decision_
-
-[2-3 sentences clearly describing the problem you're solving and why it matters]
+Penn students in medium and large classes often struggle to find reliable, compatible study partners; existing tools like GroupMe, Discord, and ad-hoc Piazza posts are noisy, unstructured, and don’t account for schedule constraints or working styles. As a result, many students either work alone or end up in ineffective groups, which hurts learning outcomes and sense of belonging in the course. GroupMeet addresses this by collecting structured data about course enrollment, availability, and study preferences, then using crowdsourced feedback on each match to iteratively improve future group formation.
 
 ### One-Sentence Pitch
 
-[Your project in one compelling sentence]
+GroupMeet is a lightweight web platform that matches Penn students into study groups based on class, availability, and study preferences, then uses quick feedback surveys to continuously improve match quality.
 
 ### Target Users
 
-**End Users**: [Who will use/benefit from the system?]
+**End Users**: Penn students enrolled in medium-to-large lecture courses who want better-matched study groups.
 
-**Crowd Workers**: [Who will contribute to the crowdsourcing tasks?]
+**Crowd Workers**: The same Penn students, acting as the crowd by submitting their course/availability information and later rating the quality of their study groups via short feedback forms.
 
-**Scale**: [How many of each do you need for a successful demo?]
+**Scale**: For a successful demo we aim for ~30–40 student participants total, with at least 25 unique form submissions, 8–12 study groups formed, and 20+ feedback responses across one or two pilot courses.
 
 ### Project Type
 
 - [ ] Human computation algorithm
 - [ ] Social science experiment with the crowd
-- [ ] Tool for crowdsourcing (requesters or workers)
+- [X] Tool for crowdsourcing (requesters or workers)
 - [ ] Business idea using crowdsourcing
 - [ ] Other: [specify]
 

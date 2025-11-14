@@ -13,7 +13,7 @@
 | Name | PennKey | Primary Role(s) | Secondary Skills |
 |------|---------|----------------|------------------|
 | Alexander Mehta | amehta26 | [e.g., Frontend Dev, UI/UX] | [e.g., Python, Data Analysis] |
-| Brandon Yan | bdonyan | [e.g., Backend Dev, API Integration] | [e.g., JavaScript, Database Design] |
+| Brandon Yan | bdonyan | Backend Dev, API Integration | Database Design |
 | Connor Cummings | connorcc | [e.g., QC Module, Data Pipeline] | [e.g., Statistics, ML] |
 | Nikki Liu | nikkiliu | [e.g., Aggregation, Analysis] | Python, Data Analysis, Visualization |
 
@@ -21,7 +21,7 @@
 
 **Skills we have:**
 - [Skill 1]: [Who has it - names/pennkeys]
-- [Skill 2]: [Who has it - names/pennkeys]
+- Database design and Backend Dev: Brandon Yan/bdonyan
 - [Skill 3]: [Who has it - names/pennkeys]
 - Python scripting: Nikki Liu/nikkiliu
 

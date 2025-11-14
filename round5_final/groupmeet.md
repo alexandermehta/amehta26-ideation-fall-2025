@@ -15,7 +15,7 @@
 | Alexander Mehta | amehta26 | [e.g., Frontend Dev, UI/UX] | [e.g., Python, Data Analysis] |
 | Brandon Yan | bdonyan | [e.g., Backend Dev, API Integration] | [e.g., JavaScript, Database Design] |
 | Connor Cummings | connorcc | [e.g., QC Module, Data Pipeline] | [e.g., Statistics, ML] |
-| Nikki Liu | nikkiliu | [e.g., Aggregation, Analysis] | [e.g., R, Visualization] |
+| Nikki Liu | nikkiliu | [e.g., Aggregation, Analysis] | Python, Data Analysis, Visualization |
 
 ### Team Skills Inventory
 
@@ -23,12 +23,12 @@
 - [Skill 1]: [Who has it - names/pennkeys]
 - [Skill 2]: [Who has it - names/pennkeys]
 - [Skill 3]: [Who has it - names/pennkeys]
-- [Skill 4]: Nikki Liu/nikkiliu
+- Python scripting: Nikki Liu/nikkiliu
 
 **Skills we need to learn/acquire:**
-- [Skill 1]: [Why we need it] - [Who will learn it]
-- [Skill 2]: [Why we need it] - [Who will learn it]
-- [Skill 3]: [Why we need it] - [Who will learn it]
+- Simple data storage (Firebase, Google Sheets API, or equivalent): Needed to store form submissions cleanly and safely - [Who will learn it]
+- Basic engagement tracking (e.g., counting open rates, clickthroughs): Needed to measure match completion and validate our Week 1 test - Nikki will learn it
+- Email automation or result-delivery tooling: Needed to send match results at scale via email or auto-generated dashboards - [Who will learn it]
 
 **External resources we might need:**
 - [Resource 1]: [e.g., Specific API access, dataset, tool] - [Status: requested/pending/acquired]

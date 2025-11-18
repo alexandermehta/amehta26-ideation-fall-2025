@@ -328,30 +328,32 @@ _Write the actual instructions workers will see. Be specific and clear._
 **Qualifications required**: [e.g., >95% approval rate, >100 HITs, US location]
 
 ---
-
 ## Technical Stack
 
 ### Technologies
 
-**Frontend**: [e.g., React, Vue, vanilla JS, none (MTurk only)]
+**Frontend**: React (Simple, responsive form for student intake)
 
-**Backend**: [e.g., Python/Flask, Node.js/Express, Django]
+**Backend**: Python (Flask) - Chosen for ease of writing matching logic and QC scripts.
 
-**Database**: [e.g., PostgreSQL, MongoDB, Firebase, SQLite]
+**Database**: Firebase (Real-time database, handles JSON documents easily and scales well for this size).
 
-**Crowdsourcing Platform**: [e.g., MTurk, custom, social media, class volunteers]
+**Crowdsourcing Platform**: Custom Web App (recruitment via Class Lists/Direct Link).
 
-**ML/AI Tools** (if applicable): [e.g., scikit-learn, TensorFlow, OpenAI API]
+**ML/AI Tools** (if applicable): scikit-learn (for clustering/similarity scoring in the aggregation module).
 
-**Hosting/Deployment**: [e.g., Heroku, AWS, Vercel, local]
+**Hosting/Deployment**: Vercel (Frontend) + Render or Heroku (Backend).
 
-**Other tools**: [Any other important tools or services]
+**Other tools**: 
+- `penn-classlist-scraper` (for enrollment verification)
+- SendGrid or University Mail Relay (for automated result emails)
 
 ### Repository Structure
 
 **Current structure**:
+
 ```
-your-repo/
+group-meet/
 ├── README.md
 ├── docs/
 │   ├── flow-diagram.pdf
@@ -367,10 +369,11 @@ your-repo/
 │   ├── sample-qc-output/
 │   ├── sample-agg-input/
 │   └── sample-agg-output/
-└── ...
+└── utils/
+...
 ```
 
-**Explain any deviations**: [If your structure differs, explain why]
+**Explain any deviations**: We added a `utils/` folder for the email notification logic, as it is a shared resource between modules but not strictly QC or Aggregation.
 
 ---
 
@@ -378,21 +381,21 @@ your-repo/
 
 ### Input Data
 
-**Source**: [Where will your input data come from?]
+**Source**: Web form submissions (React frontend) and Official Class Lists (Scraped/CSV).
 
-**Format**: [File type, structure, schema]
+**Format**: JSON for form data; CSV for class lists.
 
-**Sample data location**: `data/raw/` 
+**Sample data location**: `data/raw/`
 
 **Sample data description**:
-[Describe what sample data you've gathered and what it represents]
+Synthetic profiles of 50 students in CIS 1200, containing PennKeys, emails, availability blocks (Mon-Fri, AM/PM), and study style preferences.
 
 **How much data do you need?**
-- For testing/development: [amount]
-- For your final demo/analysis: [amount]
+- For testing/development: ~50 synthetic profiles.
+- For your final demo/analysis: 25-40 real student submissions.
 
 **Data collection plan**:
-[How and when will you gather the full dataset?]
+We will open the form immediately after Week 1 recruitment emails are sent. Data is collected in real-time via the web app and stored in Firebase.
 
 ### QC Module Data
 
@@ -400,18 +403,29 @@ your-repo/
 
 **Input format**:
 ```
-[Show example structure - can be JSON, CSV, etc.]
+{
+  "pennkey": "amehta26",
+  "email": "amehta26@upenn.edu",
+  "course": "CIS1200",
+  "timestamp": "2025-11-13T10:00:00",
+  "availability": ["Mon_PM", "Tue_AM"],
+  "goal": "Active Learning"
+}
 ```
 
 **Output location**: `data/sample-qc-output/`
 
 **Output format**:
 ```
-[Show example structure]
+{
+  "is_valid": true,
+  "error_code": null,
+  "sanitized_data": { ... }
+}
 ```
 
 **Sample scenario documentation**:
-[In your data/ directory, include a README explaining the sample QC data]
+Included in data/README.md: Explains how the validator checks the course field against the loaded CSV roster.
 
 ### Aggregation Module Data
 
@@ -419,26 +433,36 @@ your-repo/
 
 **Input format**:
 ```
-[Show example structure]
+[
+  {"id": "user1", "avail": ["Mon_PM"], "style": "visual", "goal": "problems"},
+  {"id": "user2", "avail": ["Mon_PM", "Tue_AM"], "style": "textual", "goal": "problems"}
+]
 ```
 
 **Output location**: `data/sample-agg-output/`
 
 **Output format**:
 ```
-[Show example structure]
+[
+  {
+    "group_id": 101, 
+    "members": ["user1", "user2", "user5"], 
+    "avg_compat": 0.85,
+    "meeting_time": "Mon_PM"
+  }
+]
 ```
 
 **Sample scenario documentation**:
-[In your data/ directory, include a README explaining the sample aggregation data]
+Included in data/README.md: details the clustering logic used to group user1 and user2 based on their shared "Mon_PM" slot.
 
 ### Data Dependencies
 
 **Does your QC module output feed into your aggregation module?**
-[Yes/No and explain the relationship]
+Yes. The Aggregation module strictly requires a list of validated student objects. It cannot process raw input.
 
 **Data flow between modules**:
-[Describe how data moves through your system]
+Raw Form Data (Frontend) → QC Module (Verifies Enrollment) → Validated Data Lake (Firebase) → Aggregation Module (Batch Process) → Group Assignments → Email Service.
 
 ---
 
@@ -447,36 +471,40 @@ your-repo/
 ### Recruitment Strategy
 
 **Where will workers come from?**
-[Be specific: MTurk? Class volunteers? Social media? Where exactly?]
+- Professor Partnership: We are emailing professors of CIS 1200, MATH 1400, CIS 5450, and CIS 5480 to distribute the link.
+
+- Direct Outreach: If professor partnership is slow, we will post on r/UPenn, Penn Clubs, and large course GroupMe chats.
 
 **How will you reach them?**
-[Describe your recruitment approach]
+"Need a study group for the Final? Fill out this 2-min form to get matched based on your schedule and learning style."
+
+We will post on ED and show up to the begining of lectures to pitch our product.
 
 **When will you recruit?**
-[Timeline for recruitment activities]
+Starting Wednesday, Nov 19th (Week 1), immediately after the form is live.
 
 ### Worker Incentives
 
 **Compensation model**: 
-- Payment per task: $[amount]
-- Estimated time per task: [X minutes]
-- Effective hourly rate: $[amount/hour]
+- Payment per task: $0.00 (Intrinsic Value)
+- Estimated time per task: 2 minutes
+- Effective hourly rate: N/A
 
-**Or alternative incentive**: [e.g., course credit, gamification, intrinsic motivation]
+**Or alternative incentive**: The incentive is the utility of the service: finding a compatible study group for homework or final exams without the social friction of asking around.
 
-**Justification**: [Why this incentive structure will work]
+**Justification**: Students have a strong immediate need (upcoming finals) and high friction in current solutions (spamming chats). The value of a "good match" exceeds the 2 minutes of effort required.
 
 ### Scale Requirements
 
 **For MVP/Demo**:
-- Minimum workers needed: [number]
-- Minimum tasks completed: [number]
-- Timeline: [when you need this by]
+- Minimum workers needed: 25 students
+- Minimum tasks completed: 25 form submissions, 2 groups created
+- Timeline: By Nov 28th (Thanksgiving Break)
 
 **For Full Analysis**:
-- Target workers: [number]
-- Target tasks: [number]
-- Timeline: [when you need this by]
+- Target workers: 40+ students
+- Target tasks: 40+ form submissions, 5 groups created
+- Timeline: By Dec 8th (Final Exam Period)
 
 ### Backup Plan
 
@@ -484,7 +512,7 @@ your-repo/
 - [ ] Use MTurk/paid workers (budget: $[amount])
 - [ ] Simplify task to require fewer workers
 - [ ] Use simulated/synthetic data
-- [ ] Other: [specify]
+- [ X ] Other: We will pivot to a "General Productivity" or "Co-working" pool (not class-specific) and recruit from our own social networks/clubs to ensure we have enough humans to validate the matching algorithm, even if the "class roster" aspect is simulated. This will involve going beyond the penn community likely.
 
 ---
 
@@ -492,52 +520,57 @@ your-repo/
 
 ### Week-by-Week Plan
 
-**Week 1 (Dates: [X/X - X/X])**
-- Milestone: [Major goal for this week]
+**Week 1 (Dates: [11/13 - 11/20])**
+- Milestone: MVP Launch & Initial Recruitment
 - Tasks:
-  - [ ] [Specific task] - [Owner]
-  - [ ] [Specific task] - [Owner]
-  - [ ] [Specific task] - [Owner]
+  - [ ] Build and Deploy Intake Form (React/Firebase) - Brandon
+  - [ ] Develop QC Validator & Scraper Integration - Connor
+  - [ ] Secure 1 Professor/Class Partner & Send Announcements - Alexander
+  - [] Integrate Penn SSO - Nikki
+- Deliverable: Live URL for signups; First batch of data entering the system.
+
+**Week 2 (Dates: [11/21 - 11/27])**
+- Milestone: Matching Pilot & Result Distribution
+- Tasks:
+  - [ ] Finalize Aggregation Script (Clustering Logic) - Nikki
+  - [ ] Run Matching Batch on Week 1 Data - Connor
+  - [ ] Create Group Success Monitoring Strategy - Brandon
+  - [ ] Distribute Results via Automated Email - Alexander
 - Deliverable: [What will be done/ready by end of week]
 
-**Week 2 (Dates: [X/X - X/X])**
-- Milestone: [Major goal for this week]
+**Week 3 (Dates: [11/28 - 12/04])**
+- Milestone: Feedback Loop & Admin Dashboard
 - Tasks:
-  - [ ] [Specific task] - [Owner]
-  - [ ] [Specific task] - [Owner]
-  - [ ] [Specific task] - [Owner]
-- Deliverable: [What will be done/ready by end of week]
+  - [ ] Send "Rate Your Group" Feedback Survey - Brandon
+  - [ ] Build Admin Dashboard (CSV Export) for Instructors - Alexander
+  - [ ] Analyze Feedback Data vs. Matching Score - Connor
+- Deliverable: Final Project Report, Dashboard Demo, and Analysis of Match Quality.
 
-**Week 3 (Dates: [X/X - X/X])**
-- Milestone: [Major goal for this week]
+**Week 4 (Dates: [12/05 - 12/11])**
+- Milestone: Final Presentation Prep and Overview
 - Tasks:
-  - [ ] [Specific task] - [Owner]
-  - [ ] [Specific task] - [Owner]
-  - [ ] [Specific task] - [Owner]
-- Deliverable: [What will be done/ready by end of week]
+  - [ ] Compile all metrics (signup rate, match success, satisfaction) - Nikki
+  - [ ] Polish Codebase and Documentation - All
+  - [ ] Record Demo Video - All
+- Deliverable: Final Presentation and Code Submission.
 
-**Week 4 (Dates: [X/X - X/X])**
-- Milestone: [Major goal for this week]
-- Tasks:
-  - [ ] [Specific task] - [Owner]
-  - [ ] [Specific task] - [Owner]
-  - [ ] [Specific task] - [Owner]
-- Deliverable: [What will be done/ready by end of week]
-
-_Continue through your full timeline..._
 
 ### Critical Path
 
 **Blocking dependencies** (what MUST be done before other work can proceed):
-1. [Task A] must be done before [Task B, Task C]
-2. [Task X] must be done before [Task Y]
+1. Intake Form must be live before Recruitment can effectively start.
+
+2. Recruitment must reach N=20 participants before Matching Script can produce meaningful clusters.
+
+3. Matching must occur before Feedback Surveys can be sent.
 
 **Parallel work** (what can be done simultaneously):
-- [Person 1] can work on [X] while [Person 2] works on [Y]
+- Nikki can build the Aggregation/Matching Logic while Brandon builds the Frontend Form.
+- Connor can build the QC/Scraper while Alexander handles Recruitment Outreach.
 
 **Integration points** (when pieces must come together):
-- [Date]: [What components must integrate]
-- [Date]: [What components must integrate]
+- Nov 20: Frontend (Form) data must successfully feed into the QC module.
+- Nov 21: Validated data must be ready for the Aggregation script to run the first batch.
 
 ---
 

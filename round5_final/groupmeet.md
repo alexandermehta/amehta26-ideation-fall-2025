@@ -20,19 +20,21 @@
 ### Team Skills Inventory
 
 **Skills we have:**
-- [Skill 1]: [Who has it - names/pennkeys]
+- Project Management & Outreach: Alexander Mehta/amehta26
 - Database design and Backend Dev: Brandon Yan/bdonyan
-- [Skill 3]: [Who has it - names/pennkeys]
-- Python scripting: Nikki Liu/nikkiliu
+- Statistical Analysis & ML: Connor Cummings/connorcc
+- Python scripting & Data Viz: Nikki Liu/nikkiliu
 
 **Skills we need to learn/acquire:**
-- Simple data storage (Firebase, Google Sheets API, or equivalent): Needed to store form submissions cleanly and safely - [Who will learn it]
-- Basic engagement tracking (e.g., counting open rates, clickthroughs): Needed to measure match completion and validate our Week 1 test - Nikki will learn it
-- Email automation or result-delivery tooling: Needed to send match results at scale via email or auto-generated dashboards - [Who will learn it]
+- **Penn CAS/SSO Integration**: Adapting the `cas-flask-demo` logic to authenticate users and retrieve PennKeys securely - [Nikki will learn it]
+- Simple data storage (Firebase or Google Sheets API): Needed to store form submissions cleanly and safely - Brandon will lead.
+- Basic engagement tracking: Needed to measure match completion - Nikki will learn it.
+- Email automation (SendGrid/SMTP): Needed to send match results - Alexander will learn it.
 
 **External resources we might need:**
-- [Resource 1]: [e.g., Specific API access, dataset, tool] - [Status: requested/pending/acquired]
-- [Resource 2]: [e.g., Paid service credits] - [Status and cost estimate]
+- `penn-classlist-scraper`: Tool to extract class lists for enrollment QC.
+- `cas-flask-demo`: Reference repository for implementing Penn Single Sign-On.
+- SMTP Server/Email API: SendGrid or university mail relay.
 
 ### Team Availability for TA Meetings
 
@@ -132,15 +134,14 @@ _If teaching staff questions your point distribution, explain your reasoning her
 
 _Step-by-step description of how your system works from start to finish_
 
-1. **[Step 1]**: [What happens, who/what does it]
-2. **[Step 2]**: [What happens, who/what does it]
-3. **[Step 3]**: [What happens, who/what does it]
-4. **[Step 4]**: [What happens, who/what does it]
-5. **[Step 5]**: [What happens, who/what does it]
-6. **[Step 6]**: [What happens, who/what does it]
-7. **[Step 7]**: [What happens, who/what does it]
-
-_Continue as needed..._
+1. **Professor Setup**: Instructor provides course ID (e.g., CIS 1200); System scrapes/imports the class list using `penn-classlist-scraper`.
+2. **Student Login (Authentication)**: Student visits the GroupMeet web app and clicks "Login with PennKey." The system redirects them to Penn's official CAS login page.
+3. **Identity Verification**: Upon successful login, Penn CAS redirects back to our app with the student's `pennkey`. The app creates a secure session for this user.
+4. **Preference Input**: The authenticated student fills out the preference form. The system automatically attaches their `pennkey` to the submission (preventing spoofing).
+5. **QC Processing**: System validates that the authenticated `pennkey` exists in the imported class roster. If valid, the data is accepted.
+6. **Aggregation (Matching)**: At the deadline, the script clusters students into groups of 3-5 based on compatibility scores.
+7. **Distribution**: The System emails the formed groups, introducing them and providing a "First Meeting Agenda" template.
+8. **Feedback**: 5 days later, students receive a "Rate your Group" link.
 
 ### Human vs. Automated Tasks
 
@@ -157,30 +158,24 @@ _Continue as needed..._
 
 ### QC Strategy Overview
 
-[Describe your quality control approach in 2-3 paragraphs. Why is this approach appropriate for your project?]
+Our QC strategy relies on **Institutional Authentication (SSO)** combined with **Enrollment Verification**. By integrating Penn CAS (Central Authentication Service), we eliminate the risk of fake users or external spammers. We then validate that the authenticated PennKey is actually enrolled in the target course using official rosters.
 
 ### Specific QC Mechanisms
 
-**Primary mechanism**: [e.g., Gold standard questions, Majority voting, Expert review]
+**Primary mechanism**: **Penn SSO + Roster Cross-reference**
 
 **Implementation details**:
-- Input format: [What does QC module receive?]
-- Processing: [What does it do?]
-- Output format: [What does it produce?]
-- Threshold for acceptance: [How do you decide if work is "good enough"?]
+- Input format: Authenticated Session Data (`pennkey` from CAS) + Course Selection.
+- Processing: 
+  1. Verify CAS ticket validity via Penn's servers.
+  2. Check `if session['pennkey'] in class_roster_list`.
+  3. Check `if session['pennkey'] not in already_matched`.
+- Output format: Boolean `is_valid` + Access Token.
+- Threshold for acceptance: Valid CAS login AND presence on class list.
 
 **Additional mechanisms**:
-- [ ] Gold standard questions
-  - _How many? How distributed? Pass/fail criteria?_
-- [ ] Majority voting across multiple workers
-  - _How many workers per task? Tie-breaking?_
-- [ ] Attention checks
-  - _What types? How often?_
-- [ ] Reputation system
-  - _How do workers build reputation?_
-- [ ] Statistical outlier detection
-  - _What metrics? How handled?_
-- [ ] Other: [specify and explain]
+- [ ] **Attention checks**: Included in the form to verify availability.
+- [X] **Reputation system**: Tracking "ghosting" behavior tied to the persistent PennKey identity.
 
 ### QC Module Code Plan
 
@@ -334,19 +329,21 @@ _Write the actual instructions workers will see. Be specific and clear._
 
 **Frontend**: React (Simple, responsive form for student intake)
 
-**Backend**: Python (Flask) - Chosen for ease of writing matching logic and QC scripts.
+**Backend**: Python (Flask) - Chosen for ease of writing matching logic and integrating the `cas-flask-demo` authentication routes.
 
-**Database**: Firebase (Real-time database, handles JSON documents easily and scales well for this size).
+**Authentication**: Penn CAS (Central Authentication Service) via `xmltodict` and `requests`.
+
+**Database**: Firebase (Real-time database, handles JSON documents easily).
 
 **Crowdsourcing Platform**: Custom Web App (recruitment via Class Lists/Direct Link).
 
-**ML/AI Tools** (if applicable): scikit-learn (for clustering/similarity scoring in the aggregation module).
+**ML/AI Tools**: scikit-learn (for clustering/similarity scoring).
 
 **Hosting/Deployment**: Vercel (Frontend) + Render or Heroku (Backend).
 
 **Other tools**: 
 - `penn-classlist-scraper` (for enrollment verification)
-- SendGrid or University Mail Relay (for automated result emails)
+- SendGrid (for automated emails)
 
 ### Repository Structure
 
@@ -526,7 +523,7 @@ Starting Wednesday, Nov 19th (Week 1), immediately after the form is live.
   - [ ] Build and Deploy Intake Form (React/Firebase) - Brandon
   - [ ] Develop QC Validator & Scraper Integration - Connor
   - [ ] Secure 1 Professor/Class Partner & Send Announcements - Alexander
-  - [] Integrate Penn SSO - Nikki
+  - [] Port `cas-flask-demo` code into backend to handle login/logout routes - Nikki
 - Deliverable: Live URL for signups; First batch of data entering the system.
 
 **Week 2 (Dates: [11/21 - 11/27])**
